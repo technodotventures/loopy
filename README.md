@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://technodotventures.github.io/loopy/">
+  <a href="https://loopy.systems/">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="brand/loopy-wordmark-dark.svg">
       <img src="brand/loopy-wordmark-light.svg" alt="loopy" width="260">
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://technodotventures.github.io/loopy/">Website</a> ·
+  <a href="https://loopy.systems/">loopy.systems</a> ·
   <a href="SPEC.md">Spec</a> ·
   <a href="AGENTS.md">Agent setup</a> ·
   <a href="brand/">Brand kit</a>
