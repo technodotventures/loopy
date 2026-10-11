@@ -1,6 +1,6 @@
 # Loopy brand kit
 
-The full kit, with construction notes and the colour and type specimens, is at [technodotventures.github.io/loopy/brand](https://technodotventures.github.io/loopy/brand/).
+The full kit, with construction notes and the colour and type specimens, is at [loopy.systems/brand](https://loopy.systems/brand/).
 
 ## Badges
 

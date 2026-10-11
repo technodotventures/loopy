@@ -1,6 +1,6 @@
 # Loopy Protocol
 
-**Version 0.1 (draft)** · Apache-2.0 · [technodotventures/loopy](https://github.com/technodotventures/loopy)
+**Version 0.1 (draft)** · Apache-2.0 · [loopy.systems](https://loopy.systems) · [technodotventures/loopy](https://github.com/technodotventures/loopy)
 
 Loopy is an open protocol from [Techno Ventures](https://techno.ventures) that gives any project an end-to-end autoresearch loop. Signals come in, agents propose changes, a fixed evaluator proves them, gates decide, and what survives ships.
 
