@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Read the spec
+    url: https://github.com/technodotventures/loopy/blob/main/SPEC.md
+    about: How the loop, the gates and the budgets work.

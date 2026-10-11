@@ -1,0 +1,81 @@
+# Every block in use: weekly cadence, sponsored funding, research sources, sealed evaluator.
+loopy: "0.1"
+project: acme-memory
+
+cadence:
+  mode: scheduled
+  every: 1w
+  start: 2026-10-12
+  timezone: Australia/Sydney
+
+funding:
+  model: sponsored
+  approvers: ["@acme/maintainers"]
+  pools:
+    - id: core-team
+      cap: { usd_per_month: 1500 }
+    - id: sponsor-globex
+      cap: { usd_per_month: 300 }
+      only: [prove]
+
+budget:
+  per_experiment: { tokens: 400k, minutes: 20 }
+  per_cycle:      { tokens: 20M, usd: 150 }
+  per_day:        { usd: 60 }
+  per_user:       { requests_per_day: 3 }
+  on_exhausted: report
+
+prices:
+  claude: { input: 3, output: 15 }
+
+sources:
+  - id: community
+    adapter: intake
+    with: { identity: github, types: [feature, feedback, research, integration] }
+  - id: feedback
+    adapter: github-issues
+    with: { labels: [bug, feedback] }
+  - id: research
+    adapter: arxiv
+    with: { query: "long-term memory for LLM agents", max: 20 }
+  - id: market
+    adapter: github-releases
+    with: { repos: [acme/competitor-a, acme/competitor-b] }
+
+targets:
+  editable: ["src/**", "docs/**"]
+  frozen:   ["bench/**", "tests/conformance/**"]
+
+evaluators:
+  - id: recall-dev
+    run: python -m bench.run --split dev --json
+    metric: recall@10
+    direction: up
+    tolerance: 0.5
+  - id: conformance
+    run: python -m unittest discover -s tests
+    required: true
+  - id: recall-sealed
+    run: python -m bench.run --split sealed --json
+    metric: recall@10
+    sealed: true
+    retire_after: 10
+
+gates:
+  primary: recall-dev
+  keep_if: required_pass and primary_improves
+  human_signoff: ["spec/**"]
+  max_prs_per_cycle: 5
+  auto_merge: false
+
+runner:
+  adapter: gh-aw
+  engine: claude
+  network:
+    prove: [defaults, python]
+
+sinks:
+  - adapter: feed
+    with: { publish: pages }
+  - adapter: github-projects
+    with: { project: 4 }

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/technodotventures/loopy/schema/records/proposal.schema.json",
+  "title": "Proposal",
+  "description": "A change the loop wants to try, with its reasons. Written by the propose agent.",
+  "type": "object",
+  "required": ["type", "id", "cycle", "signals", "hypothesis", "change_plan", "touches"],
+  "properties": {
+    "type": { "const": "proposal" },
+    "id": { "type": "string", "pattern": "^prop-[A-Za-z0-9._-]+$" },
+    "cycle": { "type": "integer", "minimum": 1 },
+    "signals": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "hypothesis": { "type": "string", "description": "What should improve, on which metric, and why" },
+    "change_plan": { "type": "string" },
+    "touches": { "type": "array", "items": { "type": "string" }, "minItems": 1, "description": "Paths the change will edit" },
+    "needs_signoff": { "type": "boolean", "default": false },
+    "est_tokens": { "type": "integer", "minimum": 0 },
+    "issue": { "type": "string", "format": "uri" },
+    "status": { "enum": ["open", "picked", "tried", "shipped", "dropped", "carried"] }
+  }
+}

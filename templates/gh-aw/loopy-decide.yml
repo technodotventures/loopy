@@ -1,0 +1,129 @@
+# Loopy stage 4: Decide. Plain GitHub Actions. No agent, no model calls, no secrets.
+# Re-runs the evaluators from the base branch's loopy.yml on the candidate and the
+# current version, then applies the gates with .loopy/tools/decide.py.
+name: loopy-decide
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, labeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: loopy-decide-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Job 1 runs the candidate's code, so it gets a read-only token and no secrets.
+  score:
+    if: startsWith(github.head_ref, 'loopy/') && contains(github.event.pull_request.labels.*.name, 'loopy:experiment')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the current version
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check out the candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: head
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Add your project's own setup here (setup-node, npm ci, pip install ...) for both checkouts.
+
+      - name: Install tool dependencies
+        run: pip install pyyaml
+
+      - name: Score both versions
+        run: |
+          python base/.loopy/tools/evaluate.py \
+            --manifest base/loopy.yml --base base --head head \
+            --id "exp-pr${{ github.event.pull_request.number }}-${{ github.run_attempt }}" \
+            --cycle 0 --proposal "${{ github.head_ref }}" > exp.json
+          cat exp.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: loopy-experiment
+          path: exp.json
+
+  # Job 2 never runs candidate code. It works out the diff itself from git, so a
+  # candidate can't hide a frozen path, then applies the gates and labels the PR.
+  verdict:
+    needs: score
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Check out the current version (tools and manifest only)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: loopy-experiment
+
+      - name: Decide
+        run: |
+          git fetch --no-tags origin "${{ github.event.pull_request.head.sha }}"
+          git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" > paths.txt
+          python - <<'PY'
+          import json
+          e = json.load(open("exp.json"))
+          e["paths"] = [p for p in open("paths.txt").read().splitlines() if p]
+          e["commit"] = "${{ github.event.pull_request.head.sha }}"
+          json.dump(e, open("exp.json", "w"), indent=2)
+          PY
+          set +e
+          python .loopy/tools/decide.py --manifest loopy.yml --experiment exp.json > decision.json
+          code=$?
+          set -e
+          cat decision.json
+          [ "$code" -le 2 ] || { echo "decide failed"; exit 1; }
+
+      - name: Record the verdict on the PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const d = JSON.parse(fs.readFileSync('decision.json', 'utf8'));
+            const v = d.verdict;
+            if (!['keep', 'revert', 'needs-human'].includes(v)) throw new Error(`bad verdict ${v}`);
+            const pr = context.payload.pull_request.number;
+            const rows = d.gate_trace.map(g => `| ${g.gate} | ${g.ok ? 'pass' : '**fail**'} | ${String(g.detail).replace(/\|/g, '\\|')} |`).join('\n');
+            const body = `### Loopy decide: \`${v}\`\n\n| Gate | Result | Detail |\n| --- | --- | --- |\n${rows}\n\n<sub>${d.decided_by}. Deterministic: no agent made this call.</sub>`;
+            for (const l of ['loopy:keep', 'loopy:revert', 'loopy:needs-human']) {
+              if (l !== `loopy:${v}`) {
+                try { await github.rest.issues.removeLabel({ ...context.repo, issue_number: pr, name: l }); } catch (e) {}
+              }
+            }
+            await github.rest.issues.addLabels({ ...context.repo, issue_number: pr, labels: [`loopy:${v}`] });
+            await github.rest.issues.createComment({ ...context.repo, issue_number: pr, body });
+            if (v === 'revert') {
+              await github.rest.pulls.update({ ...context.repo, pull_number: pr, state: 'closed' });
+            }

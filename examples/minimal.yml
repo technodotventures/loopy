@@ -1,0 +1,22 @@
+# The smallest useful loop: no third-party products, run by hand with any agent.
+loopy: "0.1"
+project: tiny-lib
+cadence: { mode: manual }
+funding: { model: owner, approvers: ["@me"] }
+budget:
+  per_experiment: { tokens: 200k, minutes: 10 }
+  per_cycle: { usd: 5 }
+  on_exhausted: report
+targets:
+  editable: ["src/**"]
+  frozen: ["tests/**"]
+evaluators:
+  - id: tests
+    run: python -m unittest
+    required: true
+  - id: speed
+    run: python .loopy/evaluators/bench.py
+    metric: seconds
+    direction: down
+gates: { primary: speed }
+runner: { adapter: local }

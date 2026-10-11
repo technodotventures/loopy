@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/technodotventures/loopy/schema/records/decision.schema.json",
+  "title": "Decision",
+  "description": "The verdict on one experiment. One line in .loopy/ledger.jsonl. Written only by deterministic code.",
+  "type": "object",
+  "required": ["type", "experiment", "verdict", "gate_trace", "decided_by", "at"],
+  "properties": {
+    "type": { "const": "decision" },
+    "experiment": { "type": "string" },
+    "verdict": { "enum": ["keep", "revert", "needs-human"] },
+    "gate_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "ok"],
+        "properties": {
+          "gate": { "enum": ["frozen", "budget", "required", "regression", "primary", "signoff"] },
+          "ok": { "type": "boolean" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "decided_by": { "type": "string", "description": "Name and version of the decide implementation, e.g. loopy-decide/0.1.0" },
+    "at": { "type": "string", "format": "date-time" }
+  }
+}

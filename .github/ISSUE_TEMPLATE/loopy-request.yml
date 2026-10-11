@@ -1,0 +1,29 @@
+name: Loopy request
+description: An idea, feedback, a paper or an integration for the loop to consider
+title: "[request] "
+labels: ["loopy:request"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options: [Feature, Feedback, Research, Integration]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What should change?
+      description: Plain language is fine. Say what would be better and how you'd notice.
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: A paper, a repo, a release or a thread, if there is one.
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: Who it helps, and what they do today instead.

@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/technodotventures/loopy/schema/loopy.schema.json",
+  "title": "loopy.yml",
+  "description": "The Loopy manifest. One file at the repo root declares the whole loop. See SPEC.md section 3.",
+  "type": "object",
+  "required": ["loopy", "project", "cadence", "funding", "budget", "targets", "evaluators", "gates", "runner"],
+  "additionalProperties": false,
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+    "duration": { "type": "string", "pattern": "^[1-9][0-9]*[hdw]$", "description": "e.g. 1h, 1d, 3d, 1w" },
+    "tokens": {
+      "description": "Token count, as a number or with a k/M suffix (400k, 20M)",
+      "oneOf": [
+        { "type": "integer", "minimum": 1 },
+        { "type": "string", "pattern": "^[1-9][0-9]*(\\.[0-9]+)?[kM]?$" }
+      ]
+    },
+    "usd": { "type": "number", "exclusiveMinimum": 0 },
+    "globs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "adapterRef": {
+      "type": "object",
+      "required": ["adapter"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "adapter": { "type": "string", "minLength": 1 },
+        "enabled": { "type": "boolean", "default": true },
+        "with": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "loopy": { "const": "0.1", "description": "Protocol version" },
+    "project": { "$ref": "#/$defs/id" },
+
+    "cadence": {
+      "type": "object",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "enum": ["always-on", "scheduled", "manual"] },
+        "every": { "$ref": "#/$defs/duration" },
+        "start": { "type": "string", "format": "date", "description": "Cycle 1 begins on this date" },
+        "timezone": { "type": "string" }
+      },
+      "if": { "properties": { "mode": { "const": "scheduled" } } },
+      "then": { "required": ["every", "start"] }
+    },
+
+    "funding": {
+      "type": "object",
+      "required": ["model", "approvers"],
+      "additionalProperties": false,
+      "properties": {
+        "model": { "enum": ["owner", "sponsored", "pooled"] },
+        "approvers": {
+          "description": "Who may change funding, budget, gates and evaluators. Code owners, a team handle, or a governance adapter for pooled loops.",
+          "oneOf": [
+            { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+            { "$ref": "#/$defs/adapterRef" }
+          ]
+        },
+        "pools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "cap"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "$ref": "#/$defs/id" },
+              "cap": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": false,
+                "properties": {
+                  "usd_per_day": { "$ref": "#/$defs/usd" },
+                  "usd_per_month": { "$ref": "#/$defs/usd" }
+                }
+              },
+              "only": { "type": "array", "items": { "enum": ["listen", "propose", "prove", "report"] } }
+            }
+          }
+        }
+      }
+    },
+
+    "budget": {
+      "type": "object",
+      "required": ["per_experiment", "per_cycle", "on_exhausted"],
+      "additionalProperties": false,
+      "properties": {
+        "per_experiment": {
+          "type": "object",
+          "required": ["tokens", "minutes"],
+          "additionalProperties": false,
+          "properties": {
+            "tokens": { "$ref": "#/$defs/tokens" },
+            "minutes": { "type": "integer", "minimum": 1 },
+            "usd": { "$ref": "#/$defs/usd" }
+          }
+        },
+        "per_cycle": {
+          "type": "object",
+          "required": ["usd"],
+          "additionalProperties": false,
+          "properties": {
+            "tokens": { "$ref": "#/$defs/tokens" },
+            "usd": { "$ref": "#/$defs/usd" }
+          }
+        },
+        "per_day": {
+          "type": "object", "required": ["usd"], "additionalProperties": false,
+          "properties": { "usd": { "$ref": "#/$defs/usd" } }
+        },
+        "per_month": {
+          "type": "object", "required": ["usd"], "additionalProperties": false,
+          "properties": { "usd": { "$ref": "#/$defs/usd" } }
+        },
+        "per_user": {
+          "type": "object",
+          "description": "Rate limit for community-triggered runs",
+          "additionalProperties": false,
+          "properties": { "requests_per_day": { "type": "integer", "minimum": 1 } }
+        },
+        "on_exhausted": { "enum": ["report", "pause"] }
+      }
+    },
+
+    "prices": {
+      "type": "object",
+      "description": "USD per million tokens, keyed by model name. Used to estimate dollars from token counts.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["input", "output"],
+        "additionalProperties": false,
+        "properties": {
+          "input": { "type": "number", "minimum": 0 },
+          "output": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+
+    "sources": {
+      "type": "array",
+      "items": { "allOf": [ { "$ref": "#/$defs/adapterRef" }, { "required": ["id"] } ] }
+    },
+
+    "targets": {
+      "type": "object",
+      "required": ["editable", "frozen"],
+      "additionalProperties": false,
+      "properties": {
+        "editable": { "$ref": "#/$defs/globs", "minItems": 1 },
+        "frozen": { "$ref": "#/$defs/globs" }
+      }
+    },
+
+    "evaluators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "run"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "run": { "type": "string", "minLength": 1, "description": "Command that prints {\"metric\", \"value\", \"pass\"} as JSON" },
+          "metric": { "type": "string" },
+          "direction": { "enum": ["up", "down"], "default": "up" },
+          "tolerance": { "type": "number", "minimum": 0, "description": "Largest allowed regression, in metric units" },
+          "required": { "type": "boolean", "default": false },
+          "sealed": { "type": "boolean", "default": false },
+          "retire_after": { "type": "integer", "minimum": 1, "default": 10, "description": "Sealed only: scorings before the set is retired" }
+        }
+      }
+    },
+
+    "gates": {
+      "type": "object",
+      "required": ["primary"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": { "$ref": "#/$defs/id" },
+        "keep_if": { "const": "required_pass and primary_improves", "default": "required_pass and primary_improves" },
+        "min_improvement": { "type": "number", "minimum": 0, "default": 0 },
+        "human_signoff": { "$ref": "#/$defs/globs" },
+        "max_prs_per_cycle": { "type": "integer", "minimum": 1 },
+        "auto_merge": { "type": "boolean", "default": false }
+      }
+    },
+
+    "runner": {
+      "type": "object",
+      "required": ["adapter"],
+      "additionalProperties": false,
+      "properties": {
+        "adapter": { "type": "string", "examples": ["local", "gh-aw", "claude-code", "codex"] },
+        "engine": { "type": "string" },
+        "version": { "type": "string", "description": "Pin a runner version" },
+        "network": {
+          "type": "object",
+          "description": "Network allowlist per stage",
+          "additionalProperties": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+
+    "sinks": { "type": "array", "items": { "$ref": "#/$defs/adapterRef" } }
+  }
+}

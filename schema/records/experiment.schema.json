@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/technodotventures/loopy/schema/records/experiment.schema.json",
+  "title": "Experiment",
+  "description": "One attempt at a proposal. One line in .loopy/ledger.jsonl. Written by the prove stage and the evaluators.",
+  "type": "object",
+  "required": ["type", "id", "cycle", "proposal", "commit", "paths", "evaluator_results", "usage", "status", "at"],
+  "properties": {
+    "type": { "const": "experiment" },
+    "id": { "type": "string", "pattern": "^exp-[A-Za-z0-9._-]+$" },
+    "cycle": { "type": "integer", "minimum": 1 },
+    "proposal": { "type": "string" },
+    "commit": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+    "base_commit": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+    "pr": { "type": "string", "format": "uri" },
+    "paths": { "type": "array", "items": { "type": "string" }, "description": "Every path in the diff" },
+    "evaluator_results": {
+      "type": "object",
+      "description": "Keyed by evaluator id",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["pass"],
+        "properties": {
+          "metric": { "type": "string" },
+          "value": { "type": "number" },
+          "baseline": { "type": "number", "description": "Value on the current version" },
+          "pass": { "type": "boolean" }
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "required": ["tokens", "minutes"],
+      "properties": {
+        "tokens": { "type": "integer", "minimum": 0 },
+        "usd": { "type": "number", "minimum": 0 },
+        "minutes": { "type": "number", "minimum": 0 },
+        "pool": { "type": "string" }
+      }
+    },
+    "status": { "enum": ["done", "timeout", "over_budget", "error"] },
+    "at": { "type": "string", "format": "date-time" }
+  }
+}
