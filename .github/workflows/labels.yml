@@ -1,0 +1,26 @@
+name: labels
+# Creates or updates the Loopy labels from templates/labels.yml.
+# Runs when that file changes, or by hand from the Actions tab.
+on:
+  push:
+    branches: [main]
+    paths: [templates/labels.yml, .github/workflows/labels.yml]
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create or update labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, yaml
+          for l in yaml.safe_load(open("templates/labels.yml")):
+              subprocess.run(["gh", "label", "create", l["name"], "--color", l["color"],
+                              "--description", l.get("description", ""), "--force"], check=True)
+              print("ok", l["name"])
+          PY
