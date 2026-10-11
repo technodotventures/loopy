@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The Loopy brand kit: wordmark, icon, colours, type and badges.">
+<meta property="og:title" content="Loopy">
+<meta property="og:description" content="The Loopy brand kit: wordmark, icon, colours, type and badges.">
+<meta property="og:url" content="https://technodotventures.github.io/loopy/brand/">
+<meta name="theme-color" content="#EFEAF4">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Loopy brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>/* Layout: lab-notebook pages on 16/80 graph paper; left-aligned with an amber margin rule; amber reserved for the loop and kept results. */
+:root{
+  --paper:#EFEAF4; --grid:#E2D9EC; --grid-strong:#CFC2DD; --ink:#2B1A33; --quiet:#857591; --amber:#EE9A2E; --red:#D9473B; --card:#F7F4FA;
+  --display:"Newsreader",ui-serif,Georgia,serif;
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1B1320;--grid:#251B2B;--grid-strong:#35283D;--ink:#F1EAF5;--quiet:#A493AF;--card:#211828;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#1B1320;--grid:#251B2B;--grid-strong:#35283D;--ink:#F1EAF5;--quiet:#A493AF;--card:#211828;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background-color:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grid-strong) 1px,transparent 1px),linear-gradient(90deg,var(--grid-strong) 1px,transparent 1px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:80px 80px,80px 80px,16px 16px,16px 16px}
+svg{display:block;max-width:100%}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,5vw,96px);position:relative}
+@media (min-width:900px){.wrap::before{content:"";position:absolute;left:clamp(16px,5vw,96px);margin-left:-28px;top:0;bottom:0;width:2px;background:var(--amber);opacity:.55}}
+p{margin:0 0 16px;max-width:60ch}
+h1,h2,h3{text-wrap:balance}
+.mono{font-family:var(--mono)}
+.quiet{color:var(--quiet)}
+section{padding-block:112px}
+.tag{font:500 12.5px var(--mono);letter-spacing:.04em;color:var(--quiet);margin:0 0 18px}
+h2{font-family:var(--display);font-weight:500;font-size:clamp(40px,5.6vw,72px);line-height:1;letter-spacing:-.02em;margin:0 0 22px;max-width:16ch}
+.lede{font-size:19px;color:var(--quiet);max-width:54ch;margin-bottom:48px}
+.card{background:var(--card);border:1px solid var(--grid-strong);border-radius:4px;padding:clamp(22px,3.5vw,40px);min-width:0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:860px){.g2,.g3{grid-template-columns:1fr}}
+.cap{font-size:14px;color:var(--quiet);margin:16px 0 0}
+.hero{padding-block:80px 64px}
+.heroword{width:clamp(240px,40vw,460px)}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.6vw,46px);line-height:1.12;letter-spacing:-.01em;margin:36px 0 28px;max-width:22ch}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.cmd{font:14px var(--mono);background:var(--ink);color:var(--paper);padding:11px 16px;border-radius:3px}
+.replay{font:13px var(--mono);background:none;border:1px solid var(--grid-strong);color:var(--quiet);padding:10px 14px;border-radius:3px;cursor:pointer}
+.replay:hover{color:var(--ink);border-color:var(--ink)}.replay:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.chartcard{margin-top:56px;background:var(--card);border:1px solid var(--grid-strong);border-radius:4px;padding:20px 20px 8px;overflow-x:auto}
+.chart{min-width:640px}
+.chart .ax{font:12px var(--mono);fill:var(--quiet)}
+.chart .note{font:500 13px var(--mono);fill:var(--amber)}
+.chartcap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:13px var(--mono);color:var(--quiet);padding:8px 4px 12px}
+.anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center}
+@media (max-width:860px){.anat{grid-template-columns:1fr}}
+.cons{width:100%}
+.notes{display:grid;gap:22px}
+.notes > div{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.notes svg{width:44px;height:30px}
+.notes h3{margin:0 0 4px;font:600 16px var(--sans)}
+.notes p{margin:0;font-size:15px;color:var(--quiet)}
+.wstage{display:grid;place-items:center;padding-block:48px}
+.wstage svg{width:min(100%,560px)}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--grid-strong);margin-top:28px}
+.specs div{padding:16px 16px 0 0}
+.specs b{display:block;font:500 12.5px var(--mono);margin-bottom:4px}
+.specs span{font-size:14px;color:var(--quiet)}
+@media (max-width:760px){.specs{grid-template-columns:1fr 1fr}}
+.tile-stage{display:grid;place-items:center;min-height:230px}
+.tile{width:150px;height:150px;border-radius:34px;background:#2B1A33;display:grid;place-items:center}
+.tile svg{width:76%}
+.sizes{display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap}
+.glyphs{border:1px solid var(--grid-strong);border-radius:4px;background:var(--card);overflow:hidden}
+.gl{display:grid;grid-template-columns:44px 190px 1fr 96px;gap:16px;align-items:center;padding:14px 18px;border-top:1px solid var(--grid-strong);font-size:15px}
+.gl:first-child{border-top:0}
+.gl svg{width:28px;height:28px}
+.lab{font:500 12px var(--mono);padding:4px 10px;border-radius:999px;justify-self:start;white-space:nowrap}
+.hex{font:12px var(--mono);color:var(--quiet);text-align:right}
+@media (max-width:700px){.gl{grid-template-columns:36px 1fr auto}.gl .d{grid-column:2/-1}}
+.sw{display:grid;grid-template-columns:1.6fr 1.6fr 1fr 1fr 1fr 1fr;gap:10px}
+.sw div{border-radius:4px;min-height:210px;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;font-size:13px;line-height:1.35;border:1px solid rgba(0,0,0,.08)}
+.sw b{font:600 16px var(--sans);display:block}
+@media (max-width:860px){.sw{grid-template-columns:1fr 1fr}}
+.typ{display:grid;grid-template-columns:1fr 1.25fr;gap:16px}
+@media (max-width:860px){.typ{grid-template-columns:1fr}}
+.aa{font-family:var(--display);font-size:clamp(120px,15vw,200px);line-height:.85;margin:0;letter-spacing:-.03em}
+.scale div{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:baseline;border-top:1px solid var(--grid-strong);padding:14px 0;overflow:hidden}
+.scale div:first-child{border-top:0;padding-top:0}
+.scale span:first-child{font:12px var(--mono);color:var(--quiet)}
+.scale span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.social{aspect-ratio:2/1;background:var(--paper);border:1px solid var(--grid-strong);border-radius:4px;padding:6% 7%;display:grid;align-content:space-between;
+  background-image:linear-gradient(var(--grid-strong) 1px,transparent 1px),linear-gradient(90deg,var(--grid-strong) 1px,transparent 1px);background-size:40px 40px;overflow:hidden}
+.social .sw{width:48%;display:block}
+.social p{margin:0;font-family:var(--display);font-size:clamp(14px,2.4vw,30px);max-width:24ch}
+.badges{display:flex;gap:10px;flex-wrap:wrap}
+.badge{display:inline-flex;font:500 12px var(--mono);border-radius:3px;overflow:hidden;line-height:1;border:1px solid var(--ink)}
+.badge span{padding:7px 9px}
+.badge .k{background:#2B1A33;color:#EFEAF4;display:inline-flex;align-items:center;gap:6px}
+.badge .k svg{width:22px;height:12px;flex:none}
+.term{background:#140D18;color:#D9CFE3;border-radius:4px;padding:20px 22px;font:14px/1.75 var(--mono);white-space:pre;overflow-x:auto;min-width:0}
+.term b{font-weight:400;color:#EE9A2E}.term i{font-style:normal;color:#A493AF}
+.say{font-family:var(--display);font-size:28px;line-height:1.15;margin:0 0 12px}
+.dont{color:var(--quiet);font-size:14px;margin:0;text-decoration:line-through;text-decoration-color:var(--red)}
+footer{padding-block:40px 64px;color:var(--quiet);font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.anim .try,.anim .keep{opacity:0}
+@media (prefers-reduced-motion:reduce){.anim .try,.anim .keep{opacity:1!important}}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <svg class="heroword" viewBox="0 30 340 160" role="img" aria-label="loopy"><path d="M20 50 H34 V126 Q34 140 48 140" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 90 V176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 115 A25 25 0 1 1 209 115.1" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M276 90 L298 140 M320 90 L290 176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M108.01 103.36 L110.88 105.93 M132.56 125.35 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>Built to outgrow itself.</h1>
+    <div class="row"><span class="cmd">$ npx loopy init</span><button class="replay" id="replay" type="button">Replay the cycle</button></div>
+    <div class="chartcard"><svg class="chart" viewBox="0 0 1040 380" role="img" aria-label="Best-so-far chart: 48 experiments over four cycles, 8 kept"><line x1="290.9" x2="290.9" y1="28" y2="332" stroke="var(--grid-strong)" stroke-dasharray="3 5"/><line x1="536.0" x2="536.0" y1="28" y2="332" stroke="var(--grid-strong)" stroke-dasharray="3 5"/><line x1="781.1" x2="781.1" y1="28" y2="332" stroke="var(--grid-strong)" stroke-dasharray="3 5"/><text x="168.3" y="362" text-anchor="middle" class="ax">cycle 11</text><text x="413.4" y="362" text-anchor="middle" class="ax">cycle 12</text><text x="658.6" y="362" text-anchor="middle" class="ax">cycle 13</text><text x="903.7" y="362" text-anchor="middle" class="ax">cycle 14</text><text x="44" y="336.0" text-anchor="end" class="ax">0.2</text><text x="44" y="184.0" text-anchor="end" class="ax">0.6</text><text x="44" y="32.0" text-anchor="end" class="ax">1.0</text><text x="56" y="18" class="ax">dev score</text><path class="try" d="M52.0 293.0 L60.0 301.0 M60.0 293.0 L52.0 301.0" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M72.4 272.6 L80.4 280.6 M80.4 272.6 L72.4 280.6" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M113.3 305.2 L121.3 313.2 M121.3 305.2 L113.3 313.2" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M133.7 290.1 L141.7 298.1 M141.7 290.1 L133.7 298.1" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M154.1 233.6 L162.1 241.6 M162.1 233.6 L154.1 241.6" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M174.6 258.6 L182.6 266.6 M182.6 258.6 L174.6 266.6" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M195.0 229.5 L203.0 237.5 M203.0 229.5 L195.0 237.5" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M215.4 272.2 L223.4 280.2 M223.4 272.2 L215.4 280.2" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M256.3 224.3 L264.3 232.3 M264.3 224.3 L256.3 232.3" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M276.7 243.1 L284.7 251.1 M284.7 243.1 L276.7 251.1" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M297.1 276.7 L305.1 284.7 M305.1 276.7 L297.1 284.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M317.5 246.1 L325.5 254.1 M325.5 246.1 L317.5 254.1" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M358.4 221.5 L366.4 229.5 M366.4 221.5 L358.4 229.5" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M399.2 240.7 L407.2 248.7 M407.2 240.7 L399.2 248.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M419.7 239.3 L427.7 247.3 M427.7 239.3 L419.7 247.3" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M440.1 205.4 L448.1 213.4 M448.1 205.4 L440.1 213.4" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M480.9 247.7 L488.9 255.7 M488.9 247.7 L480.9 255.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M501.4 187.2 L509.4 195.2 M509.4 187.2 L501.4 195.2" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M521.8 183.2 L529.8 191.2 M529.8 183.2 L521.8 191.2" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M562.6 234.1 L570.6 242.1 M570.6 234.1 L562.6 242.1" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M583.1 206.8 L591.1 214.8 M591.1 206.8 L583.1 214.8" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M603.5 238.3 L611.5 246.3 M611.5 238.3 L603.5 246.3" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M623.9 227.1 L631.9 235.1 M631.9 227.1 L623.9 235.1" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M644.3 207.7 L652.3 215.7 M652.3 207.7 L644.3 215.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M664.8 228.5 L672.8 236.5 M672.8 228.5 L664.8 236.5" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M685.2 179.5 L693.2 187.5 M693.2 179.5 L685.2 187.5" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M705.6 176.9 L713.6 184.9 M713.6 176.9 L705.6 184.9" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M726.0 194.4 L734.0 202.4 M734.0 194.4 L726.0 202.4" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M746.5 220.6 L754.5 228.6 M754.5 220.6 L746.5 228.6" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M787.3 183.1 L795.3 191.1 M795.3 183.1 L787.3 191.1" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M807.7 147.2 L815.7 155.2 M815.7 147.2 L807.7 155.2" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M848.6 164.6 L856.6 172.6 M856.6 164.6 L848.6 172.6" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M869.0 134.7 L877.0 142.7 M877.0 134.7 L869.0 142.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M889.4 157.7 L897.4 165.7 M897.4 157.7 L889.4 165.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M909.9 182.5 L917.9 190.5 M917.9 182.5 L909.9 190.5" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M930.3 140.3 L938.3 148.3 M938.3 140.3 L930.3 148.3" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M950.7 150.6 L958.7 158.6 M958.7 150.6 L950.7 158.6" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M971.1 156.3 L979.1 164.3 M979.1 156.3 L971.1 164.3" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M991.6 133.0 L999.6 141.0 M999.6 133.0 L991.6 141.0" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path class="try" d="M1012.0 197.7 L1020.0 205.7 M1020.0 197.7 L1012.0 205.7" stroke="var(--quiet)" stroke-width="1.8" stroke-linecap="round"/><path id="bestline" d="M56.0 248.4 H76.4 H96.9 V227.4 H117.3 H137.7 H158.1 H178.6 H199.0 H219.4 H239.8 V219.3 H260.3 H280.7 H301.1 H321.5 H342.0 V215.1 H362.4 H382.8 V198.3 H403.2 H423.7 H444.1 H464.5 V183.3 H484.9 H505.4 H525.8 H546.2 V173.6 H566.6 H587.1 H607.5 H627.9 H648.3 H668.8 H689.2 H709.6 H730.0 H750.5 H770.9 V137.9 H791.3 H811.7 H832.2 V120.0 H852.6 H873.0 H893.4 H913.9 H934.3 H954.7 H975.1 H995.6 H1016.0 H1024.0" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linejoin="round"/><circle class="keep" cx="96.9" cy="227.4" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="239.8" cy="219.3" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="342.0" cy="215.1" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="382.8" cy="198.3" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="464.5" cy="183.3" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="546.2" cy="173.6" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="770.9" cy="137.9" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><circle class="keep" cx="832.2" cy="120.0" r="5" fill="var(--amber)" stroke="var(--card)" stroke-width="1.5"/><text class="note keep" x="820.2" y="106.0" text-anchor="end">kept · 0.76</text></svg><div class="chartcap"><span>48 experiments · 8 kept · best 0.76</span><span>example data</span></div></div>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <p class="tag">the mark</p>
+    <h2>Two laps, one line.</h2>
+    <p class="lede">The loop is two o's drawn as one pen line: a small one, then a bigger one, crossing over and under in the middle. It reads as "oo" inside the name and as a loop on its own, and it says the whole idea in one stroke: every lap ends a little ahead of the last.</p>
+    <div class="anat">
+      <div class="card"><svg class="cons" viewBox="56 66 152 92" role="img" aria-label="The loop: a small o and a larger o joined by two crossing strokes that weave over and under"><g stroke="var(--grid-strong)" stroke-width="1" fill="none" stroke-dasharray="2 3"><circle cx="94" cy="119" r="21"/><circle cx="160" cy="111" r="29"/><line x1="60" y1="140" x2="204" y2="140"/><line x1="94" y1="119" x2="160" y2="111"/></g><path class="inf" d="M108.01 103.36 L114.12 108.83 M129.32 122.45 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="94" cy="119" r="1.8" fill="var(--quiet)"/><circle cx="160" cy="111" r="1.8" fill="var(--quiet)"/><text x="94" y="152" text-anchor="middle" style="font:500 6px var(--mono);fill:var(--quiet)">lap n</text><text x="160" y="152" text-anchor="middle" style="font:500 6px var(--mono);fill:var(--quiet)">lap n+1</text></svg></div>
+      <div class="notes">
+        <div><svg viewBox="0 0 44 30"><circle cx="14" cy="18" r="7" fill="none" stroke="var(--ink)" stroke-width="2.4"/><circle cx="31" cy="14" r="10" fill="none" stroke="var(--ink)" stroke-width="2.4"/></svg><div><h3>Each lap a little bigger</h3><p>The second o is larger than the first, both sitting on the baseline. The next lap always comes out ahead of the last.</p></div></div>
+        <div><svg viewBox="0 0 44 30"><path d="M8 26 L18 17 M26 11 L36 4" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M8 4 L36 26" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/></svg><div><h3>Over, then under</h3><p>At the crossing the new lap passes over the old one, the way a pen line does. It's what makes the loop drawn rather than set.</p></div></div>
+        <div><svg viewBox="0 0 44 30"><rect x="10" y="7" width="24" height="16" rx="3" fill="var(--amber)"/></svg><div><h3>Amber means kept</h3><p>The loop is the only amber in the logo, the same amber that marks a kept result on every chart.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">wordmark</p>
+    <h2>The loop is the oo.</h2>
+    <p class="lede">The letters are plotter strokes: one pen, one weight, round ends, every letter on the same monospaced grid. All of it is vector, so the wordmark renders anywhere without a font, a GitHub README included.</p>
+    <div class="card wstage"><svg class="" viewBox="0 30 340 160" role="img" aria-label="loopy"><path d="M20 50 H34 V126 Q34 140 48 140" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 90 V176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 115 A25 25 0 1 1 209 115.1" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M276 90 L298 140 M320 90 L290 176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M108.01 103.36 L110.88 105.93 M132.56 125.35 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="specs">
+      <div><b>stroke</b><span>One pen weight, round caps</span></div>
+      <div><b>grid</b><span>Monospaced: every letter on a 64-unit advance</span></div>
+      <div><b>colour</b><span>Letters in Ink or Paper; the loop always Amber</span></div>
+      <div><b>clear space</b><span>One x-height on every side</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">icon</p>
+    <h2>The loop on its own.</h2>
+    <p class="lede">Out of the wordmark, the loop is the icon: amber on an Ink tile for apps and avatars, Ink on paper where colour isn't available.</p>
+    <div class="g3">
+      <div class="card tile-stage"><div class="tile"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L108.72 104.00 M134.72 127.28 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="card tile-stage"><svg class="" style="width:62%" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L109.80 104.96 M133.64 126.32 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--ink)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--ink)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="card tile-stage" style="background:var(--amber);border-color:transparent"><svg class="" style="width:62%" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L109.80 104.96 M133.64 126.32 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="#2B1A33" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="#2B1A33" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="card" style="margin-top:16px"><div class="sizes">
+      <div class="tile" style="width:96px;height:96px;border-radius:22px"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L107.64 103.03 M135.80 128.25 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="tile" style="width:48px;height:48px;border-radius:11px"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L105.48 101.09 M137.96 130.19 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="tile" style="width:28px;height:28px;border-radius:7px"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L103.32 99.16 M140.12 132.12 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="tile" style="width:16px;height:16px;border-radius:4px"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L101.16 97.22 M142.28 134.06 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div><p class="cap">App icon, avatar and favicon at 96, 48, 28 and 16 px. The stroke thickens as the size drops.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">notebook marks</p>
+    <h2>Eight marks run the board.</h2>
+    <p class="lede">Each stage of a loop has a mark you could draw with a pen, and a GitHub label colour ready to paste. Boards, the feed and README badges all use the same set.</p>
+    <div class="glyphs"><div class="gl"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="4.5" fill="var(--quiet)"/></svg><span class="lab" style="background:#D9CFE6;color:#2B1A33;border:1px solid #2B1A3322">loopy:signal</span><span class="d quiet">A new input: request, feedback, paper or release</span><span class="hex">D9CFE6</span></div><div class="gl"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="6.5" fill="none" stroke="var(--ink)" stroke-width="2.4"/></svg><span class="lab" style="background:#B9A6CF;color:#2B1A33;border:1px solid #2B1A3322">loopy:proposal</span><span class="d quiet">A proposed change, linked to its signals</span><span class="hex">B9A6CF</span></div><div class="gl"><svg viewBox="0 0 28 28"><path d="M9 9 L19 19 M19 9 L9 19" stroke="var(--quiet)" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lab" style="background:#6B5579;color:#FFFFFF;border:1px solid #2B1A3322">loopy:experiment</span><span class="d quiet">A tried change, being scored</span><span class="hex">6B5579</span></div><div class="gl"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="6.5" fill="var(--amber)"/></svg><span class="lab" style="background:#EE9A2E;color:#2B1A33;border:1px solid #2B1A3322">loopy:keep</span><span class="d quiet">Passed every gate: the point turns amber</span><span class="hex">EE9A2E</span></div><div class="gl"><svg viewBox="0 0 28 28"><path d="M10 10 L18 18 M18 10 L10 18" stroke="var(--quiet)" stroke-width="2.6" stroke-linecap="round"/><path d="M5 20 L23 8" stroke="var(--red)" stroke-width="2.4" stroke-linecap="round"/></svg><span class="lab" style="background:#D9473B;color:#FFFFFF;border:1px solid #2B1A3322">loopy:revert</span><span class="d quiet">Struck out: failed a gate</span><span class="hex">D9473B</span></div><div class="gl"><svg viewBox="0 0 28 28"><circle cx="11" cy="15" r="5.5" fill="var(--amber)"/><path d="M19 6 a3 3 0 1 1 3 3 v2" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="14.5" r="1.2" fill="var(--ink)"/></svg><span class="lab" style="background:#F2C94C;color:#2B1A33;border:1px solid #2B1A3322">loopy:needs-human</span><span class="d quiet">Kept, but waiting for an approver</span><span class="hex">F2C94C</span></div><div class="gl"><svg viewBox="0 0 28 28"><path d="M4 22 H11 V15 H18 V8 H24" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="lab" style="background:#2B1A33;color:#EFEAF4;border:1px solid #2B1A3322">loopy:shipped</span><span class="d quiet">Merged; the line steps up</span><span class="hex">2B1A33</span></div><div class="gl"><svg viewBox="0 0 28 28"><path d="M6 14 H22" stroke="var(--quiet)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 5"/></svg><span class="lab" style="background:#EFEAF4;color:#2B1A33;border:1px solid #2B1A3322">loopy:source/*</span><span class="d quiet">Where a signal came from</span><span class="hex">EFEAF4</span></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">colour</p>
+    <h2>Lilac paper, aubergine ink, one amber pen.</h2>
+    <p class="lede">The page is graph paper and the ink does the writing. Amber is reserved for the loop and for what got kept. Red appears only when something is struck out.</p>
+    <div class="sw">
+      <div style="background:#EFEAF4;color:#2B1A33"><b>Paper</b><span class="mono">#EFEAF4</span>Ground</div>
+      <div style="background:#2B1A33;color:#EFEAF4"><b>Ink</b><span class="mono">#2B1A33</span>Lines and text</div>
+      <div style="background:#CFC2DD;color:#2B1A33"><b>Grid</b><span class="mono">#CFC2DD</span>Rules</div>
+      <div style="background:#857591;color:#FFFFFF"><b>Pencil</b><span class="mono">#857591</span>Tried, quiet</div>
+      <div style="background:#EE9A2E;color:#2B1A33"><b>Amber</b><span class="mono">#EE9A2E</span>The loop, kept</div>
+      <div style="background:#D9473B;color:#FFFFFF"><b>Red</b><span class="mono">#D9473B</span>Reverted</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">type</p>
+    <h2>A journal, a manual and a log.</h2>
+    <p class="lede">Newsreader for headlines, like the title of a paper. IBM Plex Sans for reading. IBM Plex Mono for anything a machine wrote: scores, labels, manifests.</p>
+    <div class="typ">
+      <div class="card" style="display:grid;align-content:space-between;gap:28px;min-height:340px"><p class="aa">Aa</p><div><p style="margin:0;font-weight:600">Newsreader · IBM Plex Sans · IBM Plex Mono</p><p class="cap" style="margin:6px 0 0">All open-source, all on Google Fonts.</p></div></div>
+      <div class="card scale">
+        <div><span>58 / news</span><span style="font-family:var(--display);font-size:clamp(36px,4.2vw,58px);line-height:1;font-weight:500">Keep what wins</span></div>
+        <div><span>36 / news</span><span style="font-family:var(--display);font-size:36px">Cycle 14 kept 3 of 12</span></div>
+        <div><span>19 / sans</span><span style="font-size:19px">The sealed score held, so the change shipped.</span></div>
+        <div><span>15 / sans</span><span style="font-size:15px">Every change links the signal that caused it.</span></div>
+        <div><span>13 / mono</span><span class="mono" style="font-size:13px;color:var(--quiet)">loopy:keep · recall@1000 +0.4</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">in use</p>
+    <h2>Ready for the repo.</h2>
+    <p class="lede">The social preview, badges, command-line output and favicons for technodotventures/loopy.</p>
+    <div class="social">
+      <svg class="sw" viewBox="0 30 340 160" role="img" aria-label="loopy"><path d="M20 50 H34 V126 Q34 140 48 140" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 90 V176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 115 A25 25 0 1 1 209 115.1" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M276 90 L298 140 M320 90 L290 176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M108.01 103.36 L110.88 105.93 M132.56 125.35 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p>Built to outgrow itself.</p>
+    </div>
+    <p class="cap">GitHub social preview, 1280 × 640.</p>
+    <div class="g2" style="margin-top:16px">
+      <div class="card">
+        <div class="badges">
+          <span class="badge"><span class="k"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L103.32 99.16 M140.12 132.12 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>loopy</span><span>L2 governed</span></span>
+          <span class="badge"><span class="k"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L103.32 99.16 M140.12 132.12 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>cycle</span><span>14 · 3d</span></span>
+          <span class="badge"><span class="k"><svg class="" viewBox="62 72 140 80" role="img" aria-label="Loopy icon"><path class="inf" d="M108.01 103.36 L103.32 99.16 M140.12 132.12 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>improving with loopy</span></span>
+        </div>
+        <p class="cap">README badges: conformance level, the live cycle, and "improving with loopy" for projects that run it.</p>
+      </div>
+      <div class="term">$ npx loopy init
+<b>  ∞ loopy</b> 0.1.0
+  cadence      every 3d <i>(Australia/Sydney)</i>
+  budget       20M tokens · $150 per cycle
+  evaluators   locomo-dev, conformance, locomo-sealed
+  runner       gh-aw <i>(claude)</i>
+<b>  ● wrote loopy.yml, .loopy/ and 5 workflows</b></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="tag">voice</p>
+    <h2>Lab notes, not hype.</h2>
+    <p class="lede">Loopy talks like a good lab notebook: what was tried, what was kept, what it cost. A little wry, always exact.</p>
+    <div class="g3">
+      <div class="card"><p class="say">Try everything. Keep what wins.</p><p class="dont">Unleash infinite self-improvement.</p></div>
+      <div class="card"><p class="say">Kept 3 of 12. Spent $41 of $150.</p><p class="dont">Your loop crushed it this cycle!</p></div>
+      <div class="card"><p class="say">Struck out: dev score up, sealed score down.</p><p class="dont">Oops, something went wrong.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="wrap"><span>Loopy brand · Techno Ventures</span><span class="mono">Apache-2.0 · technodotventures/loopy</span></footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var chart=document.querySelector('.chart'), line=document.getElementById('bestline'), infs=[].slice.call(document.querySelectorAll('.heroword .inf'));
+  var dots=[].slice.call(chart.querySelectorAll('.try, .keep'));
+  function prep(p){var L=p.getTotalLength();p.style.transition='none';p.style.strokeDasharray=L;p.style.strokeDashoffset=L;}
+  function draw(p,ms,delay){setTimeout(function(){p.style.transition='stroke-dashoffset '+ms+'ms cubic-bezier(.5,0,.2,1)';p.style.strokeDashoffset=0;},delay);}
+  function play(){
+    if(reduce) return;
+    chart.classList.add('anim'); prep(line); infs.forEach(prep);
+    dots.forEach(function(e){e.style.transition='none';e.style.opacity=0;});
+    chart.getBoundingClientRect();
+    dots.sort(function(a,b){return a.getBBox().x-b.getBBox().x;}).forEach(function(e,i){setTimeout(function(){e.style.transition='opacity .25s';e.style.opacity=1;},150+i*36);});
+    draw(infs[0],800,100); draw(infs[1],800,850); draw(line,1900,300);
+  }
+  document.getElementById('replay').addEventListener('click',play);
+  play();
+})();
+</script>
+
+</html>

@@ -1,0 +1,58 @@
+# loopy.yml: the whole loop in one file. Humans own it; agents can never edit it.
+# Spec: https://github.com/technodotventures/loopy/blob/main/SPEC.md
+loopy: "0.1"
+project: my-project                     # TODO(human): confirm
+
+cadence:
+  mode: scheduled                       # always-on | scheduled | manual
+  every: 1w                             # weekly is the right first cadence for most projects
+  start: 2026-10-19                     # cycle 1 begins here (a Monday)
+  timezone: UTC
+
+funding:
+  model: owner                          # owner | sponsored | pooled
+  approvers: ["@my-org/maintainers"]    # TODO(human): who may change budget, gates and evaluators
+  pools:
+    - id: core
+      cap: { usd_per_month: 100 }
+
+budget:
+  per_experiment: { tokens: 300k, minutes: 20 }
+  per_cycle:      { tokens: 5M, usd: 25 }
+  per_day:        { usd: 10 }
+  per_user:       { requests_per_day: 3 }
+  on_exhausted: report                  # report | pause
+
+sources:
+  - id: requests
+    adapter: github-issues
+    with: { labels: ["loopy:request", bug, feedback] }
+
+targets:
+  editable: ["src/**", "docs/**"]       # TODO(human): what agents may change
+  frozen:   ["tests/**", "bench/**"]    # loopy.yml, .loopy/ tooling and CI are always frozen
+
+evaluators:
+  - id: tests
+    run: npm test                       # TODO(human): your test command
+    required: true
+  - id: perf
+    run: node .loopy/evaluators/perf.js # TODO(human): prints {"metric":"ops_per_sec","value":123,"pass":true}
+    metric: ops_per_sec
+    direction: up
+    tolerance: 2
+
+gates:
+  primary: perf
+  keep_if: required_pass and primary_improves
+  human_signoff: ["docs/spec/**"]
+  max_prs_per_cycle: 3
+  auto_merge: false
+
+runner:
+  adapter: gh-aw                        # local | gh-aw | claude-code | codex
+  engine: claude
+
+sinks:
+  - adapter: feed
+    with: { publish: pages }

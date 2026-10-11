@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/technodotventures/loopy/schema/feed.schema.json",
+  "title": "Loopy feed",
+  "description": "The public JSON feed one project publishes. Public data only: no private issues, no token or cost detail beyond budget totals.",
+  "type": "object",
+  "required": ["loopy", "project", "generated", "cycle"],
+  "properties": {
+    "loopy": { "const": "0.1" },
+    "project": { "type": "string" },
+    "generated": { "type": "string", "format": "date-time" },
+    "cycle": {
+      "type": "object",
+      "required": ["number", "start", "end", "stage"],
+      "properties": {
+        "number": { "type": "integer", "minimum": 1 },
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" },
+        "stage": { "enum": ["listen", "propose", "prove", "decide", "ship", "report", "idle"] },
+        "budget": { "type": "object", "properties": { "used_usd": { "type": "number" }, "cap_usd": { "type": "number" } } }
+      }
+    },
+    "signals": {
+      "type": "object",
+      "properties": {
+        "by_source": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "latest": { "type": "array", "items": { "type": "object", "required": ["title", "source"], "properties": { "title": { "type": "string" }, "source": { "type": "string" }, "url": { "type": "string" } } } }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": { "type": "object", "required": ["at", "text"], "properties": { "at": { "type": "string", "format": "date-time" }, "actor": { "enum": ["agent", "maintainer", "community", "gate"] }, "text": { "type": "string" }, "url": { "type": "string" } } }
+    },
+    "board": {
+      "type": "array",
+      "items": { "type": "object", "required": ["id", "title", "stage"], "properties": { "id": { "type": "string" }, "title": { "type": "string" }, "stage": { "enum": ["listen", "propose", "prove", "ship"] }, "source": { "type": "string" }, "url": { "type": "string" }, "progress": { "type": "number", "minimum": 0, "maximum": 1 } } }
+    },
+    "changelog": {
+      "type": "array",
+      "items": { "type": "object", "required": ["cycle", "title"], "properties": { "cycle": { "type": "integer" }, "title": { "type": "string" }, "source": { "type": "string" }, "pr": { "type": "string" }, "proposal": { "type": "string" } } }
+    },
+    "metrics": {
+      "type": "array",
+      "items": { "type": "object", "required": ["cycle", "primary"], "properties": { "cycle": { "type": "integer" }, "primary": { "type": "number" }, "sealed": { "type": "number" } } }
+    },
+    "requests": {
+      "type": "array",
+      "items": { "type": "object", "required": ["title", "status"], "properties": { "title": { "type": "string" }, "votes": { "type": "integer" }, "status": { "enum": ["new", "triaged", "proposed", "in-progress", "shipped", "declined"] }, "url": { "type": "string" } } }
+    }
+  }
+}

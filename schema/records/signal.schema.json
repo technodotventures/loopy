@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/technodotventures/loopy/schema/records/signal.schema.json",
+  "title": "Signal",
+  "description": "One input to the loop: a request, feedback, a paper, a release. Written by source adapters and the triage agent.",
+  "type": "object",
+  "required": ["type", "id", "source", "title", "created"],
+  "properties": {
+    "type": { "const": "signal" },
+    "id": { "type": "string", "pattern": "^sig-[A-Za-z0-9._-]+$" },
+    "source": { "type": "string", "description": "The source id from loopy.yml" },
+    "kind": { "enum": ["feature", "feedback", "research", "integration", "bug", "market", "other"] },
+    "title": { "type": "string" },
+    "body": { "type": "string" },
+    "url": { "type": "string", "format": "uri" },
+    "author": { "type": "string" },
+    "created": { "type": "string", "format": "date-time" },
+    "votes": { "type": "integer", "minimum": 0, "default": 0 },
+    "score": { "type": "number", "minimum": 0, "maximum": 1, "description": "Set by triage" },
+    "dup_of": { "type": "string", "description": "Signal id this duplicates" },
+    "cycle": { "type": "integer", "minimum": 1 }
+  }
+}
