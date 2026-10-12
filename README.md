@@ -7,7 +7,7 @@
   </a>
 </p>
 
-<h3 align="center">Every loop, it evolves itself.</h3>
+<h3 align="center">Every loop, autonomous evolution.</h3>
 
 <p align="center">
   An open protocol for autonomous research loops.<br>
