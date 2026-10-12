@@ -72,8 +72,8 @@ One file, `loopy.yml`, declares the whole loop: cadence, budget, sources, what a
 
 | Project | What it is | Cadence |
 | --- | --- | --- |
-| Smartware | The memory and context layer for software | Weekly |
-| expresso | The language for agents that act | Weekly |
+| [Smartware](https://smartware.software) | Self-improving memory for agents and apps | Weekly |
+| [expresso](https://expresso.build) | The language for agents that act | Weekly |
 
 Running Loopy on your project? Add a badge:
 

@@ -134,6 +134,9 @@ footer{padding-block:40px 64px;color:var(--quiet);font-size:14px;display:flex;ju
 .proj dl div{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.14);font-size:14px}
 .proj dt{font:12px var(--mono);opacity:.6;padding-top:2px}
 .proj dd{margin:0}
+.proj .plink{justify-self:start;display:inline-flex;align-items:center;gap:8px;font:500 14px var(--mono);color:inherit;text-decoration:none;border:1px solid rgba(255,255,255,.28);border-radius:4px;padding:10px 14px;min-height:44px;transition:background .15s,border-color .15s}
+.proj .plink:hover,.proj .plink:focus-visible{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.6)}
+.proj .plink span{transition:transform .15s}.proj .plink:hover span{transform:translate(2px,-2px)}
 @media (prefers-reduced-motion:reduce){.pstate i{animation:none}}
 /* site additions */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--grid-strong)}
@@ -429,12 +432,13 @@ footer a{color:var(--quiet)}
   <div class="projects">
     <article class="proj sm">
       <div class="pbrand"><span class="smlock"><svg viewBox="0 0 8 8" aria-hidden="true"><g fill="#FA502E"><rect x="2" y="0" width="6" height="2"/><rect x="0" y="2" width="2" height="1"/><rect x="2" y="3" width="4" height="2"/><rect x="6" y="5" width="2" height="1"/><rect x="0" y="6" width="6" height="2"/></g></svg><span class="smwm">smartware</span></span><span class="pstate"><i></i>Autonomously improving</span></div>
-      <p class="ptag">The memory and context layer for software.</p>
+      <p class="ptag">Self-improving memory for agents and apps.</p>
       <dl>
         <div><dt>cadence</dt><dd>weekly</dd></div>
         <div><dt>evaluators</dt><dd>LoCoMo recall, conformance suite, sealed test set</dd></div>
         <div><dt>signals</dt><dd>frontier research, product feedback, community requests</dd></div>
       </dl>
+      <a class="plink" href="https://smartware.software">smartware.software <span aria-hidden="true">&#8599;</span></a>
     </article>
     <article class="proj ex">
       <div class="pbrand"><span class="exlogo" role="img" aria-label="expresso"></span><span class="pstate"><i></i>Autonomously improving</span></div>
@@ -444,6 +448,7 @@ footer a{color:var(--quiet)}
         <div><dt>evaluators</dt><dd>conformance fixtures, verifier break attempts</dd></div>
         <div><dt>signals</dt><dd>language research, design-partner feedback, community requests</dd></div>
       </dl>
+      <a class="plink" href="https://expresso.build">expresso.build <span aria-hidden="true">&#8599;</span></a>
     </article>
   </div>
   <p class="cap">Anyone can file a request or point either loop at a paper. A triage agent merges duplicates and adds it to the next cycle.</p>
@@ -534,5 +539,4 @@ footer a{color:var(--quiet)}
   if(!reduce) setInterval(step,900);
 })();
 </script>
-
 </html>
