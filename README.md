@@ -7,11 +7,11 @@
   </a>
 </p>
 
-<h3 align="center">Every loop, a leap.</h3>
+<h3 align="center">Every loop, a step up.</h3>
 
 <p align="center">
   An open protocol for autonomous research loops.<br>
-  Agents read the frontier, run the experiments and ship whatever beats the last best, on a budget you set.
+  Agents propose changes, plain code keeps only what beats the record, within a budget you set.
 </p>
 
 <p align="center">
