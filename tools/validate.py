@@ -25,6 +25,17 @@ def extra_checks(m):
         errs.append(f"gates.primary {prim!r} is not an evaluator id")
     elif byid[prim].get("sealed"):
         errs.append("gates.primary can't be a sealed evaluator; agents would never see their score")
+    g = m.get("gates", {})
+    if g.get("keep_if") == "required_pass and pareto_improves":
+        cost = g.get("pareto", {}).get("cost")
+        if cost not in byid:
+            errs.append(f"gates.pareto.cost {cost!r} is not an evaluator id")
+        elif byid[cost].get("sealed"):
+            errs.append("gates.pareto.cost can't be a sealed evaluator")
+        elif cost == prim:
+            errs.append("gates.pareto.cost must be a different evaluator from gates.primary")
+    elif "pareto" in g:
+        errs.append("gates.pareto is set but keep_if isn't 'required_pass and pareto_improves'")
     b = m.get("budget", {})
     try:
         pe, pc = b.get("per_experiment", {}), b.get("per_cycle", {})

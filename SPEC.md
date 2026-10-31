@@ -267,9 +267,25 @@ The decide job runs after every experiment and applies the gates in order; the f
 2. **Budget respected.** If the experiment went over `per_experiment`, the verdict is `revert`.
 3. **Required evaluators pass.** Any failing `required: true` evaluator means `revert`.
 4. **No regression.** If any evaluator with a `tolerance` drops by more than it allows, the verdict is `revert`.
-5. **Primary improves.** If the primary metric does not beat the current version, the verdict is `revert`.
+5. **Primary improves.** If the primary metric does not beat the current version, the verdict is `revert`. In pareto mode this gate is replaced by the trade-off rule below.
 6. **Human sign-off.** If the diff touches a `human_signoff` path, the verdict is `needs-human` and the PR waits for a code owner's approval.
 7. Otherwise the verdict is `keep`.
+
+**Trading quality for cost.** Some loops, such as choosing which model runs each agent, are judged on two numbers at once. A cheaper model that is almost as good can be the right pick, and a single primary metric can't say so. Setting `keep_if: required_pass and pareto_improves` turns gate 5 into a trade-off rule against a second, cost evaluator:
+
+```yaml
+gates:
+  primary: judge-dev
+  keep_if: required_pass and pareto_improves
+  pareto:
+    cost: cost-per-task        # an evaluator, usually dollars or tokens per task
+    max_primary_loss: 0.3      # in primary metric units
+    min_cost_saving: 0.4       # as a fraction of the current cost
+```
+
+The change is kept if it is better on the primary and no worse on cost, cheaper and no worse on the primary, or gives up no more than `max_primary_loss` for a saving of at least `min_cost_saving`. Anything else is `revert`. The cost evaluator is re-run by the decide job like any other; the runner's own token count is never used. Gate 4 still applies first, so a `tolerance` on the primary caps every trade. Cost evaluators SHOULD average over enough runs that noise can't pass as a saving.
+
+**LLM judges are evaluators, so humans own them.** When a loop is scored by a model grading outputs against a rubric, the judge's model, version, prompt and rubric MUST sit inside a frozen evaluator. Otherwise agents learn to please the judge, and scores move whenever the judge changes. Upgrading the judge is a manifest change for the approvers, and the sealed set should be scored with both judges for one cycle so the trend line holds.
 
 **Sealed evaluators fight overfitting.** A loop that tests the same dev set thousands of times will learn that set rather than improve. Sealed evaluators run once per cycle, at report time, on data the agents never see. If the sealed score falls while the dev score rises, the report flags it and the next cycle starts from the last version that held up.
 
@@ -282,6 +298,8 @@ The decide job runs after every experiment and applies the gates in order; the f
 - Agents never publish packages, cut releases or touch secrets. A release is always a human action.
 - Network access is an allowlist per stage. The prove stage gets package registries only.
 - Every agent action goes through the runner's restricted write channel (safe outputs in gh-aw), never a raw write token.
+
+**Recipes.** [`examples/`](examples/) holds manifests for common loops. Two cover software factories: [`self-improve-skills.yml`](examples/self-improve-skills.yml) has agents score past conversations with a pinned judge and edit only their own skills, and [`model-benchmark.yml`](examples/model-benchmark.yml) replays past conversations against different model selections and keeps a swap with the pareto gate. Self-improvement raises quality; benchmarking lowers cost.
 
 ---
 

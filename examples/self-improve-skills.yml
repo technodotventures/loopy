@@ -1,0 +1,84 @@
+# Self-improvement loop for a software factory.
+# Every day, agents read yesterday's factory conversations, find where they went wrong,
+# and propose edits to their own skills and AGENTS.md. A pinned LLM judge scores replays
+# of past tasks with the candidate skills against a frozen rubric. Agents can edit the
+# skills, never the judge, the rubric or the replay set.
+loopy: "0.1"
+project: acme-factory
+
+cadence:
+  mode: scheduled
+  every: 1d
+  start: 2026-11-02
+  timezone: Australia/Sydney
+
+funding:
+  model: owner
+  approvers: ["@acme/platform"]
+
+budget:
+  per_experiment: { tokens: 300k, minutes: 30 }
+  per_cycle:      { tokens: 5M, usd: 25 }
+  per_day:        { usd: 25 }
+  on_exhausted: report
+
+sources:
+  # Conversation logs exported by the factory. Listen scores each one with the
+  # judge and turns the worst performers into signals ("5 conversations wrote
+  # redundant tests").
+  - id: transcripts
+    adapter: files
+    with: { path: .factory/transcripts/, since: 1d }
+  - id: feedback
+    adapter: github-issues
+    with: { labels: [loopy:request, agent-feedback] }
+
+targets:
+  # The only thing this loop improves is how the agents are instructed.
+  editable: [".agents/skills/**", "AGENTS.md"]
+  frozen:
+    - .factory/transcripts/**
+    - .factory/replay/**        # dev, sealed and reserve replay sets
+    - .factory/judge/**         # judge prompt, rubric and pinned model
+    - src/**                    # product code ships through the core factory loop, not this one
+
+evaluators:
+  # Replays the dev set of past tasks with the candidate skills; the judge scores
+  # each run on the rubric (efficiency, code quality, test coverage) out of 10.
+  # The judge model, its version and the rubric are part of this frozen command,
+  # so a judge upgrade is a manifest change a human approves.
+  - id: judge-dev
+    run: python .loopy/evaluators/replay_judge.py --split dev --judge .factory/judge/pinned.yml --json
+    metric: rubric_score
+    direction: up
+    tolerance: 0.2
+  - id: replays-complete
+    run: python .loopy/evaluators/replay_judge.py --split dev --check-complete
+    required: true
+  - id: skills-lint
+    run: python .loopy/evaluators/lint_skills.py .agents/skills AGENTS.md
+    required: true
+  # Never shown to agents. If this falls while judge-dev rises, the skills are
+  # being tuned to the judge, not to the work.
+  - id: judge-sealed
+    run: python .loopy/evaluators/replay_judge.py --split sealed --judge .factory/judge/pinned.yml --json
+    metric: rubric_score
+    sealed: true
+    retire_after: 10
+
+gates:
+  primary: judge-dev
+  keep_if: required_pass and primary_improves
+  min_improvement: 0.1
+  human_signoff: ["AGENTS.md"]     # skill edits can ship; changes to the top-level brief wait for a person
+  max_prs_per_cycle: 3
+  auto_merge: false
+
+runner:
+  adapter: claude-code
+  network:
+    prove: [defaults]
+
+sinks:
+  - adapter: files
+    with: { path: .loopy/cycles/ }
