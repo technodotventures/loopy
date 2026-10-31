@@ -180,9 +180,26 @@
       "type": "object",
       "required": ["primary"],
       "additionalProperties": false,
+      "if": { "properties": { "keep_if": { "const": "required_pass and pareto_improves" } }, "required": ["keep_if"] },
+      "then": { "required": ["pareto"] },
       "properties": {
         "primary": { "$ref": "#/$defs/id" },
-        "keep_if": { "const": "required_pass and primary_improves", "default": "required_pass and primary_improves" },
+        "keep_if": {
+          "enum": ["required_pass and primary_improves", "required_pass and pareto_improves"],
+          "default": "required_pass and primary_improves",
+          "description": "primary_improves: the primary metric must beat the current version. pareto_improves: the change must move the quality/cost frontier, see gates.pareto."
+        },
+        "pareto": {
+          "type": "object",
+          "description": "Used when keep_if is pareto_improves. Keep a change that is better on the primary or the cost evaluator and worse on neither, or that gives up at most max_primary_loss for at least min_cost_saving.",
+          "required": ["cost"],
+          "additionalProperties": false,
+          "properties": {
+            "cost": { "$ref": "#/$defs/id", "description": "Evaluator id that measures cost, such as dollars or tokens per task" },
+            "max_primary_loss": { "type": "number", "minimum": 0, "default": 0, "description": "Largest primary drop accepted in a trade, in primary metric units" },
+            "min_cost_saving": { "type": "number", "exclusiveMinimum": 0, "maximum": 1, "default": 1, "description": "Smallest cost saving that justifies a trade, as a fraction of the current cost (0.3 = 30% cheaper)" }
+          }
+        },
         "min_improvement": { "type": "number", "minimum": 0, "default": 0 },
         "human_signoff": { "$ref": "#/$defs/globs" },
         "max_prs_per_cycle": { "type": "integer", "minimum": 1 },
