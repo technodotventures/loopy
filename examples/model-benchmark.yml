@@ -8,6 +8,13 @@
 # Replays are rewritten as single prompts with the requirements up front, since a
 # multi-turn replay drifts once the new model answers differently. When the loop
 # can route live traffic, an A/B source can replace the replay set.
+#
+# You write the evaluators. The scripts under .loopy/evaluators/ are not shipped
+# with Loopy; build them for your stack. Each one must print a JSON line as its
+# last output, {"metric": "<name>", "value": <number>, "pass": true}, and exit 0
+# (non-zero, or "pass": false, counts as a failure). Checks with no number, like
+# --check-complete, can just exit 0 or 1. Paths under .factory/ and .agents/ are
+# placeholders for wherever your transcripts, replays, judge and skills live.
 loopy: "0.1"
 project: acme-factory
 
