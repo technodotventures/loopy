@@ -3,6 +3,10 @@
 # and propose edits to their own skills and AGENTS.md. A pinned LLM judge scores replays
 # of past tasks with the candidate skills against a frozen rubric. Agents can edit the
 # skills, never the judge, the rubric or the replay set.
+#
+# Replays: rewrite each past conversation as one prompt with the user's
+# requirements up front. Multi-turn replays drift, because the user was
+# answering the old run, not the new one.
 loopy: "0.1"
 project: acme-factory
 
@@ -52,6 +56,19 @@ evaluators:
     metric: rubric_score
     direction: up
     tolerance: 0.2
+  # Guardrails. If the judge score rises while these get worse, the skills are
+  # pleasing the judge, not helping the work. The regression gate reverts any
+  # change that pushes either past its tolerance.
+  - id: cost-per-pr
+    run: python .loopy/evaluators/replay_cost.py --split dev --per pr --json
+    metric: usd_per_pr
+    direction: down
+    tolerance: 0.25
+  - id: cycle-time
+    run: python .loopy/evaluators/replay_cost.py --split dev --metric minutes_per_pr --json
+    metric: minutes_per_pr
+    direction: down
+    tolerance: 2
   - id: replays-complete
     run: python .loopy/evaluators/replay_judge.py --split dev --check-complete
     required: true
