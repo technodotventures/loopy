@@ -4,6 +4,10 @@
 # conversations with that model, a pinned judge grades the outputs, and a cost
 # evaluator prices the run. The pareto gate keeps a swap that is better or cheaper
 # and worse on neither, or one that gives up a little quality for a big saving.
+#
+# Replays are rewritten as single prompts with the requirements up front, since a
+# multi-turn replay drifts once the new model answers differently. When the loop
+# can route live traffic, an A/B source can replace the replay set.
 loopy: "0.1"
 project: acme-factory
 
