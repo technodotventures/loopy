@@ -20,6 +20,37 @@ from loopylib import ALWAYS_FROZEN, load_manifest, matches_any, parse_tokens  # 
 
 VERSION = "loopy-decide/0.1.0"
 EXIT = {"keep": 0, "revert": 1, "needs-human": 2}
+PARETO = "required_pass and pareto_improves"
+
+
+def _gain(ev, r):
+    """Signed change against the baseline: positive is always better."""
+    sign = -1 if ev.get("direction") == "down" else 1
+    return (r["value"] - r["baseline"]) * sign
+
+
+def _pareto(gates, evals, results, pid, p, gain, need):
+    """Keep a change that is better on quality or cost and worse on neither, or that
+    trades a small, capped quality loss for a large enough cost saving (SPEC.md section 8)."""
+    cfg = gates.get("pareto", {})
+    cid = cfg.get("cost")
+    ce, c = evals.get(cid), results.get(cid, {})
+    if ce is None or "value" not in c or "baseline" not in c:
+        return False, f"cost {cid!r} missing, sealed, or has no value and baseline"
+    cgain = _gain(ce, c)
+    base = abs(c["baseline"])
+    saving = cgain / base if base else (1.0 if cgain > 0 else 0.0)
+    max_loss = cfg.get("max_primary_loss", 0)
+    min_saving = cfg.get("min_cost_saving", 1)
+    head = (f"{pid}: {p['baseline']} -> {p['value']} (gain {gain:+g}); "
+            f"{cid}: {c['baseline']} -> {c['value']} (saving {saving:+.1%})")
+    if gain > need and cgain >= 0:
+        return True, head + "; better quality, cost no worse"
+    if cgain > 0 and gain >= 0:
+        return True, head + "; cheaper, quality no worse"
+    if cgain > 0 and gain >= -max_loss and saving >= min_saving:
+        return True, head + f"; trade within limits (loss <= {max_loss:g}, saving >= {min_saving:.0%})"
+    return False, head + f"; not on the frontier (loss <= {max_loss:g} needs saving >= {min_saving:.0%})"
 
 
 def decide(manifest, exp, now=None):
@@ -90,17 +121,20 @@ def decide(manifest, exp, now=None):
     if not gate("regression", not regressed, "; ".join(regressed) or "no regression"):
         return verdict("revert")
 
-    # 5. Primary improves.
+    # 5. Primary improves, or (pareto mode) the change moves the cost/quality frontier.
     pid = gates.get("primary")
     p = results.get(pid, {})
     pe = evals.get(pid)
     if pe is None or "value" not in p or "baseline" not in p:
         gate("primary", False, f"primary {pid!r} missing, sealed, or has no value and baseline")
         return verdict("revert")
-    sign = -1 if pe.get("direction") == "down" else 1
-    gain = (p["value"] - p["baseline"]) * sign
+    gain = _gain(pe, p)
     need = gates.get("min_improvement", 0)
-    if not gate("primary", gain > need, f"{pid}: {p['baseline']} -> {p['value']} (gain {gain:+g}, need > {need:g})"):
+    if gates.get("keep_if") == PARETO:
+        ok, detail = _pareto(gates, evals, results, pid, p, gain, need)
+        if not gate("pareto", ok, detail):
+            return verdict("revert")
+    elif not gate("primary", gain > need, f"{pid}: {p['baseline']} -> {p['value']} (gain {gain:+g}, need > {need:g})"):
         return verdict("revert")
 
     # 6. Human sign-off.
