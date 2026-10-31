@@ -1,0 +1,87 @@
+# Benchmark loop for a software factory.
+# Every week, agents propose a different model for one of the factory's agents
+# (say, an open-weight model for the PR reviewer). Prove replays sampled past
+# conversations with that model, a pinned judge grades the outputs, and a cost
+# evaluator prices the run. The pareto gate keeps a swap that is better or cheaper
+# and worse on neither, or one that gives up a little quality for a big saving.
+loopy: "0.1"
+project: acme-factory
+
+cadence:
+  mode: scheduled
+  every: 1w
+  start: 2026-11-02
+  timezone: Australia/Sydney
+
+funding:
+  model: owner
+  approvers: ["@acme/platform"]
+
+budget:
+  per_experiment: { tokens: 2M, minutes: 60, usd: 15 }   # replays are the expensive part
+  per_cycle:      { tokens: 10M, usd: 60 }
+  per_day:        { usd: 60 }
+  on_exhausted: report
+
+prices:
+  # Keep current. Used for budget caps; the cost evaluator prices replays itself.
+  frontier:    { input: 5, output: 25 }
+  open-weight: { input: 0.5, output: 2 }
+
+sources:
+  - id: transcripts
+    adapter: files
+    with: { path: .factory/transcripts/, sample: 200 }
+  - id: model-requests
+    adapter: github-issues
+    with: { labels: [loopy:request, model-request] }
+
+targets:
+  # Agents may only change which model each factory agent uses.
+  editable: [".factory/models.yml"]
+  frozen:
+    - .factory/transcripts/**
+    - .factory/replay/**
+    - .factory/judge/**
+    - .factory/prices.yml       # the cost evaluator's price table is human-owned
+
+evaluators:
+  # Quality: replay the dev sample with the candidate model selection; the pinned
+  # judge grades each output out of 10.
+  - id: judge-dev
+    run: python .loopy/evaluators/replay_judge.py --split dev --models .factory/models.yml --judge .factory/judge/pinned.yml --json
+    metric: rubric_score
+    direction: up
+    tolerance: 0.5
+  # Cost: dollars per task for the same replays, priced from .factory/prices.yml.
+  - id: cost-per-task
+    run: python .loopy/evaluators/replay_cost.py --split dev --models .factory/models.yml --prices .factory/prices.yml --json
+    metric: usd_per_task
+    direction: down
+  - id: replays-complete
+    run: python .loopy/evaluators/replay_judge.py --split dev --models .factory/models.yml --check-complete
+    required: true
+  - id: judge-sealed
+    run: python .loopy/evaluators/replay_judge.py --split sealed --models .factory/models.yml --judge .factory/judge/pinned.yml --json
+    metric: rubric_score
+    sealed: true
+
+gates:
+  primary: judge-dev
+  keep_if: required_pass and pareto_improves
+  pareto:
+    cost: cost-per-task
+    max_primary_loss: 0.3      # give up at most 0.3 rubric points...
+    min_cost_saving: 0.4       # ...and only for a run that is at least 40% cheaper
+  human_signoff: [".factory/models.yml"]   # a model swap reaches production only with a person's approval
+  max_prs_per_cycle: 2
+  auto_merge: false
+
+runner:
+  adapter: claude-code
+  network:
+    prove: [defaults, model-apis]
+
+sinks:
+  - adapter: files
+    with: { path: .loopy/cycles/ }

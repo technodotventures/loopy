@@ -63,6 +63,7 @@ One file, `loopy.yml`, declares the whole loop: cadence, budget, sources, what a
 | [`SPEC.md`](SPEC.md) | The protocol, v0.1 |
 | [`AGENTS.md`](AGENTS.md) | Step-by-step setup for coding agents |
 | [`schema/`](schema/) | JSON Schemas for `loopy.yml`, the records and the public feed |
+| [`examples/`](examples/) | Example manifests, from the smallest loop to software-factory recipes for self-improving skills and model benchmarking |
 | [`templates/`](templates/) | Starter `loopy.yml`, the `.loopy/` folder, stage prompts, gh-aw workflows, labels |
 | [`tools/`](tools/) | `validate.py` (manifest check) and `decide.py` (the reference keep-or-revert gate) |
 | [`brand/`](brand/) | Wordmark, icon and badges |
