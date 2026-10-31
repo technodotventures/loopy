@@ -252,6 +252,14 @@ footer{padding-block:40px 64px;color:var(--quiet);font-size:14px;display:flex;ju
 .cad .ticks{display:flex;gap:3px;height:22px;align-items:flex-end}
 .cad .ticks i{display:block;width:3px;background:var(--ink);border-radius:1px}
 @media (max-width:900px){.cad{grid-template-columns:1fr 1fr}.cad div{border-top:1px solid var(--grid-strong)}}
+.recipe{display:grid;gap:14px;align-content:start}
+.recipe h3{margin:0}.recipe p{margin:0}
+.recipe .rk{font:12px var(--mono);color:var(--quiet);text-transform:uppercase;letter-spacing:.06em}
+.recipe dl{margin:0;border-top:1px solid var(--grid-strong)}
+.recipe dl div{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--grid-strong);font-size:14px}
+.recipe dt{font:12px var(--mono);color:var(--quiet);padding-top:2px}.recipe dd{margin:0}
+.recipe .rlink{justify-self:start;display:inline-flex;align-items:center;gap:8px;font:500 14px var(--mono);color:var(--ink);text-decoration:none;border:1px solid var(--grid-strong);border-radius:4px;padding:10px 14px;min-height:44px;overflow-wrap:anywhere}
+.recipe .rlink:hover,.recipe .rlink:focus-visible{border-color:var(--ink)}
 .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media (max-width:900px){.rules{grid-template-columns:1fr}}
 .rule{background:var(--card);border:1px solid var(--grid-strong);border-radius:4px;padding:24px}
@@ -293,7 +301,7 @@ footer a{color:var(--quiet)}
 
 <nav class="nav" aria-label="Main"><div class="wrap">
   <a class="brand" href="#top" aria-label="Loopy home"><svg class="" viewBox="0 30 340 160" role="img" aria-label="loopy"><path d="M20 50 H34 V126 Q34 140 48 140" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 90 V176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M209 115 A25 25 0 1 1 209 115.1" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M276 90 L298 140 M320 90 L290 176" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M108.01 103.36 L110.88 105.93 M132.56 125.35 L140.65 132.60 A29 29 0 1 0 136.05 94.65" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path class="inf" d="M136.05 94.65 L111.34 130.84 A21 21 0 1 1 108.01 103.36" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <ul><li><a href="#how">How it works</a></li><li><a href="#manifest">Manifest</a></li><li><a href="#guardrails">Guardrails</a></li><li><a href="#adapters">Adapters</a></li><li><a href="#projects">Projects</a></li><li><a href="#badge">Badge</a></li><li><a href="#spec">Spec</a></li></ul>
+  <ul><li><a href="#how">How it works</a></li><li><a href="#manifest">Manifest</a></li><li><a href="#guardrails">Guardrails</a></li><li><a href="#recipes">Recipes</a></li><li><a href="#adapters">Adapters</a></li><li><a href="#projects">Projects</a></li><li><a href="#badge">Badge</a></li><li><a href="#spec">Spec</a></li></ul>
   <div class="r"><a class="btn btn-line" href="https://github.com/technodotventures/loopy"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></div>
 </div></nav>
 
@@ -378,7 +386,7 @@ footer a{color:var(--quiet)}
       <div><b>budget</b><p>Hard caps per experiment, per cycle and per day, in tokens, minutes and dollars. When a cap is hit, the loop writes its report and waits.</p></div>
       <div><b>sources</b><p>Research papers, market moves, product feedback and public requests. Anything that can write a record can be a source.</p></div>
       <div><b>evaluators</b><p>The commands that define "better". You write them, agents can't touch them, and a sealed set keeps the loop honest.</p></div>
-      <div><b>gates</b><p>Keep or revert, decided in code. Anything on a protected path waits for a person.</p></div>
+      <div><b>gates</b><p>Keep or revert, decided in code. Optionally trade a capped bit of quality for a real cost saving. Anything on a protected path waits for a person.</p></div>
     </div>
   </div>
 </div></section>
@@ -401,13 +409,44 @@ footer a{color:var(--quiet)}
   <h2>Autonomous, not unsupervised.</h2>
   <p class="lede">A loop that improves itself needs rules it can't rewrite. These hold even if Loopy itself has a bug, because branch protection and code owners enforce them.</p>
   <div class="rules">
-    <div class="rule"><svg class="ri" viewBox="0 0 28 28"><rect x="7" y="13" width="14" height="10" rx="2" fill="none" stroke="var(--ink)" stroke-width="2.2"/><path d="M10 13 V10 a4 4 0 0 1 8 0 V13" fill="none" stroke="var(--ink)" stroke-width="2.2"/></svg><h3>Humans own the scorer</h3><p>Agents can change the code they're improving. Never the evaluators, the gates, the budget or the manifest.</p></div>
-    <div class="rule"><svg class="ri" viewBox="0 0 28 28"><circle cx="14" cy="14" r="7" fill="var(--amber)"/></svg><h3>Keep or revert</h3><p>A change survives only if it beats the current version and passes every required check. Everything else is struck out.</p></div>
+    <div class="rule"><svg class="ri" viewBox="0 0 28 28"><rect x="7" y="13" width="14" height="10" rx="2" fill="none" stroke="var(--ink)" stroke-width="2.2"/><path d="M10 13 V10 a4 4 0 0 1 8 0 V13" fill="none" stroke="var(--ink)" stroke-width="2.2"/></svg><h3>Humans own the scorer</h3><p>Agents can change the code they're improving. Never the evaluators, the gates, the budget or the manifest. An LLM judge's model, version and rubric are locked the same way.</p></div>
+    <div class="rule"><svg class="ri" viewBox="0 0 28 28"><circle cx="14" cy="14" r="7" fill="var(--amber)"/></svg><h3>Keep or revert</h3><p>A change survives only if it beats the current version, or is cheaper for a quality loss you've capped, and passes every required check. Everything else is struck out.</p></div>
     <div class="rule"><svg class="ri" viewBox="0 0 28 28"><path d="M8 8 L20 20 M20 8 L8 20" stroke="var(--quiet)" stroke-width="2.6" stroke-linecap="round"/></svg><h3>Nothing grades itself</h3><p>The verdict comes from deterministic code, not from the agent that wrote the change.</p></div>
     <div class="rule"><svg class="ri" viewBox="0 0 28 28"><rect x="5" y="7" width="18" height="14" rx="2" fill="none" stroke="var(--ink)" stroke-width="2.2"/><path d="M5 9 L14 16 L23 9" fill="none" stroke="var(--ink)" stroke-width="2.2"/></svg><h3>Sealed tests</h3><p>Held-out evaluations run once per cycle on data no agent has seen, and retire before they go stale.</p></div>
     <div class="rule"><svg class="ri" viewBox="0 0 28 28"><circle cx="14" cy="10" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2.2"/><path d="M6 24 a8 8 0 0 1 16 0" fill="none" stroke="var(--ink)" stroke-width="2.2"/></svg><h3>People sign the rules</h3><p>Protected paths, like a spec, wait for a named approver. Releases are always a human action.</p></div>
     <div class="rule"><svg class="ri" viewBox="0 0 28 28"><circle cx="7" cy="14" r="3" fill="var(--quiet)"/><path d="M10 14 H18" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 3"/><circle cx="21" cy="14" r="3.5" fill="var(--amber)"/></svg><h3>Every change has a reason</h3><p>Each shipped change links the proposal, the runs and the signal that started it. Replay any loop from its ledger.</p></div>
   </div>
+</div></section>
+
+<section id="recipes"><div class="wrap">
+  <p class="tag">recipes</p>
+  <h2>Loops for software factories.</h2>
+  <p class="lede">Two loops every agent team ends up wanting, as manifests you can copy. Self-improvement drives quality up. Benchmarking drives cost down. Loopy makes both safe to leave running.</p>
+  <div class="g2">
+    <article class="card recipe">
+      <p class="rk">daily</p>
+      <h3>Self-improving skills</h3>
+      <p>A pinned judge scores yesterday's agent conversations. Agents edit their own skills and nothing else. Edits that raise the score while cost per PR or cycle time gets worse are reverted.</p>
+      <dl>
+        <div><dt>editable</dt><dd>skills, AGENTS.md (with sign-off)</dd></div>
+        <div><dt>evaluators</dt><dd>judge on replays, cost per PR, cycle time, sealed replays</dd></div>
+        <div><dt>gate</dt><dd>primary improves, guardrails hold</dd></div>
+      </dl>
+      <a class="rlink" href="https://github.com/technodotventures/loopy/blob/main/examples/self-improve-skills.yml">self-improve-skills.yml <span aria-hidden="true">&#8599;</span></a>
+    </article>
+    <article class="card recipe">
+      <p class="rk">weekly</p>
+      <h3>Model benchmarking</h3>
+      <p>Agents propose model swaps. Past tasks are replayed, judged and priced. A swap ships only if it is better or cheaper and worse on neither, or gives up a capped bit of quality for a big saving.</p>
+      <dl>
+        <div><dt>editable</dt><dd>model selection only</dd></div>
+        <div><dt>evaluators</dt><dd>judge on replays, cost per task, sealed replays</dd></div>
+        <div><dt>gate</dt><dd>pareto: quality against cost, then a person signs off</dd></div>
+      </dl>
+      <a class="rlink" href="https://github.com/technodotventures/loopy/blob/main/examples/model-benchmark.yml">model-benchmark.yml <span aria-hidden="true">&#8599;</span></a>
+    </article>
+  </div>
+  <p class="cap">Judges are evaluators, so they're frozen: model, version, prompt and rubric. Replays are rewritten as one prompt with the requirements up front, so a new model isn't answering the old conversation.</p>
 </div></section>
 
 <section id="adapters"><div class="wrap">
